@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Trivia Game</title>
+
+    <!--Reset-->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    
+    <!--Bootstrap library-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!--Custom links-->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+  </head>
+  <body>
+  	<!--HTML CODE-->
+    <!--div><h1>Name: <span id="nameOutput"></span></h1></div-->
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div id="">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <h1>Rick and Morty Trivia</h1>
+                                <div id="timer">00:30</div>
+                            </div><!--Title Col-->
+                        </div><!--row-->
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="start">
+                                    <!--button id = "startButton">Start</button-->
+                                </div>
+                            </div><!--timer col-->
+                        </div><!--row-->
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="question">
+                                    <div id = "questionMessageOutput"></div>
+                                    <div id = "questionChoicesOutput"></div>
+                                </div>
+                            </div><!--Question col-->
+                        </div><!--row-->
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div id = "response">
+                                    <div id = "responseMessageOutput"><span class="text-center"></span><p><span id = "responseAnswerOutput"></span></p></div>
+                                    <div id = "responseImage"></div>
+                                </div>
+                            </div><!--Response col-->
+                        </div><!--row-->
+                        <div class = "row">
+                            <div class = "col-12">
+                                <div id = "summary">
+                                    <div><span id = "summaryTitleCorrectOutput"></span><span id = "summaryNumCorrectOutput"></span></div>
+                                    <div><span id = "summaryTitleIncorrectOutput"></span><span id = "summaryNumIncorrectOutput"></span></div>
+                                    <div><span id = "summaryTitleUnansweredOutput"></span><span id = "summaryNumUnansweredOutput"></span></div>
+                                    <!--button id = "summaryButton"></button-->
+                                </div>
+                            </div><!--Image col-->
+                        </div><!--row-->
+                    </div><!--wrapper-->
+                </div><!--Outter col-->
+            </div><!--Outter row-->
+        </div><!--container-->
+    
+  	<!-- jQuery -->
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+      <!-- Script -->
+      <script type="text/javascript" src="assets/javascript/app.js"></script>
+  </body>
+</html>

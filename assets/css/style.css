@@ -1,0 +1,25 @@
+@font-face{
+    font-family: r-m;
+  /*src: url(../fonts/_adult_swim_font__by_esteveztheart-dbj9by8.ttf); regular title*/
+    /*src: url(../fonts/Calligraphr-Regular.ttf); credit text*/
+  src: url(../fonts/get_schwifty__a_rick_and_morty_font_by_jonizaak-dajw4u8.ttf); 
+    /*src: url(../fonts/rick_and_morty_by_shittychan-d9h2vl6.ttf); credit text*/
+}
+body{
+    /*background: linear-gradient(0deg, rgba(0,0,0,.5), rgba(0,0,0,.5)),url(../images/garage-background.png) no-repeat center center fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+h1{
+    font-family:'r-m', sans-serif;
+    color: #00b0ca;
+    -webkit-text-stroke: 1px black;
+
+    text-shadow: 3px 6px 2px rgba(81, 164, 67, .3);
+    font-size:4rem;
+}
+/*#wrapper{
+ 
+}*/
