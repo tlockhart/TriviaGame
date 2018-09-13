@@ -124,13 +124,15 @@ var stopwatch = {
     
 
     //question variables
-    var questions = [];
+   /* var questions = [];*/
 
     //response variables
     var $responseGameScreen = $('#response');
     var responseTimeout;
     var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!'];
     var responseButtonValue = -1;
+    var correctAnswerMsg = 'The correct answer is:';
+    var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.jpg', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
     /*******************************
      * Helper functions
      * *****************************/
@@ -138,23 +140,8 @@ var stopwatch = {
     function setState(newState){
         state = newState;
     }
-    
-     //Helper method to update all dynamic output content
-     function displayDynamicOutput(outputElement, value){
-        var $outputElement = $("#"+outputElement);
-        console.log($outputElement);
-        $outputElement.text(value);
-    }
-
     //Update display based on state or button click
     function updateDisplays(){
-    }
-    
-    //Helper method to update all dynamic output content
-    function displayDynamicOutput(outputElement, value){
-        var $outputElement = $("#"+outputElement);
-        console.log($outputElement);
-        $outputElement.text(value);
     }
     
     function displayStartGameScreen(){
@@ -173,16 +160,15 @@ var stopwatch = {
     }*/
     function displayQuestionGameScreen(){
         var choiceLength = 4;
-        var $question = $('#questionMessageOutput');
-        $question.text(questionMessage[currentQuestion]);
+        /*var $question = $('#questionMessageOutput');
+        $question.text(questionMessage[currentQuestion]);*/
+        displayDynamicOutput('questionMessageOutput', questionMessage[currentQuestion]);
         
         /*console.log("Question = "+questionMessage[currentQuestion]);*/
         console.log("I am displaying the QuestionGameScreen");
 
         for (var i = 0; i < choiceLength; i++)
         {
-            /*$choice = $('#choices'+i);
-            $choice.text(questionChoices[currentQuestion][i]);*/
             displayDynamicOutput('choice'+i, questionChoices[currentQuestion][i]);
             console.log('Choices = '+questionChoices[currentQuestion][i]);
         }
@@ -190,35 +176,82 @@ var stopwatch = {
         //show questionGameScreen
         $questionGameScreen.show();
     }
+    function setResponses(){
+        //Display the correct answer
+            /**********************************************************/
+            displayDynamicOutput('responseMessageOutput', correctAnswerMsg);
+            
+            var index = parseInt(questionAnswers[currentQuestion]);
+
+           /* console.log('Current Question = '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);*/
+            
+            //Display Generic Message
+            displayDynamicOutput('responseAnswerOutput', questionChoices[currentQuestion][index]);
+
+            //Display the  image
+            displayImage('responseImage', responseImages[currentQuestion]);
+            /**********************************************************/
+    }
     function displayResponseGameScreen(){
         //Set Evaluation message
         console.log("RESPONSE BUTTON VALUE = "+responseButtonValue+", Correct Answer = "+questionAnswers[currentQuestion]);
         if(responseButtonValue == questionAnswers[currentQuestion]){
-            $('#responseEvaluationOutput').text(responseEvaluation[0]);
+            /*$('#responseEvaluationOutput').text(responseEvaluation[0]);*/
+            displayDynamicOutput('responseEvaluationOutput', responseEvaluation[0]);
+
+            //Stop the Timer
             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
+
+            //Clear the Time Up Interal Immediately
+            clearInterval(responseTimeout);
+            
+            //Set the HTML Response Elements
+            setResponses();
+            
+            //show responseGameScreen
+            $responseGameScreen.show();
+            /**********************************************************/
         }
         else if(responseButtonValue != questionAnswers[currentQuestion] && responseButtonValue > -1 ){
-            $('#responseEvaluationOutput').text(responseEvaluation[1]);
+            /*$('#responseEvaluationOutput').text(responseEvaluation[1]);*/
+            displayDynamicOutput('responseEvaluationOutput', responseEvaluation[1]);
+
+            //Stop the Timer
             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
+            
+            //Clear the Time Up Interal Immediately
+            clearInterval(responseTimeout);
+
+            //Set the HTML Response Elements
+            setResponses();
+
+            //show responseGameScreen
+            $responseGameScreen.show();
         }
-        /*9/12/2018: else if(stopwatch.isTimeOutReached()){
-            $('#responseEvaluationOutput').text(responseEvaluation[2]);
-            stopwatch.stop();
-            console.log("DisplayResponseGameScreen: Times Up Time stopped");
-        }*/
 
-        //show responseGameScreen
-        $responseGameScreen.show();
+        
 
-        //update game Screen
-        //updateGameScreen();
+        /*$('#start').html("<img src='http://random-ize.com/coin-flip/us-quarter/us-quarter-front.jpg' />");*/
+        /*('responseImage', correctAnswerMsg+questionChoices[questionAnswers[currentQuestion]]);*/
+        /*$('#responseImage').html('<img src='+responseImage[currentQuestion]+'/>');*/
 
-        //After the correct value is displayed then reset the responseButtonValue
-        //reset ReponseButtonValue
-        //9/12/2018: responseButtonValue = -1;
+        
     }
+    function displayImage(outputElement, value){
+        var $outputElement = $('#'+outputElement);
+        //$outputElement.html('<img src= assets/images/'+value+'/>')
+        $outputElement.attr('src', value);
+
+    }
+      //Helper method to update all dynamic output content
+      function displayDynamicOutput(outputElement, value){
+        var $outputElement = $('#'+outputElement);
+        console.log($outputElement);
+        $outputElement.text(value);
+    }
+
     /*function hideQuestionGameScreen(){
         $questionGameScreen.hide();
         console.log("I am hiding the QuestionGameScreen");
@@ -242,19 +275,23 @@ var stopwatch = {
                //Set Timout for 5 seconds
                //NOTE: Save a ref to the responseTimeout, so we can clear it in timeout (setTimeOut takes the function name only)
                responseTimeout = setTimeout(timeOut, 1000 * stopwatch.timeLimit);
-
-               //9/12/2018: setState(states.RESPONSE);
-               
-               //check for an update in the state
-               //9/12/2018: updateGameScreen();
     }
     function timeOut(){
        // Check if a button has already been clicked before showing Times Up Message
            if(responseButtonValue == -1)
            {
-            $('#responseEvaluationOutput').text(responseEvaluation[2]);
+            /*$('#responseEvaluationOutput').text(responseEvaluation[2]);*/
+            displayDynamicOutput('responseEvaluationOutput', responseEvaluation[2]);
+
+            //Stop the Timer
             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Times Up Time stopped");
+
+            //Set the HTML Response Elements
+            setResponses();
+            
+            //show responseGameScreen
+            $responseGameScreen.show();
 
             /*********************************
              * HIDE MUST BE CALLED B4 DISPLAY
@@ -263,12 +300,13 @@ var stopwatch = {
             hideAllGameScreens();
             
             //Call display after responseEvaluation element has been set
-            displayResponseGameScreen();
+            /*displayResponseGameScreen();*/
+            $responseGameScreen.show();
            }
            //If button has been clicked clear reponseTimeout
-           else{
+           /*else{
                clearInterval(responseTimeout);
-           }
+           }*/
            
        // }
     }
