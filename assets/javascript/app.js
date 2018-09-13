@@ -47,16 +47,6 @@ var stopwatch = {
     /*stopwatch.time = 0;*/
     console.log("STOP HAS BEEN CLICKED!")
   },
-  /*recordLap: function() {
-
-    var converted = stopwatch.timeConverter(stopwatch.time);
-
-    // DONE: Add the current lap and time to the "laps" div.
-    $("#laps").append("<p>Lap " + stopwatch.lap + " : " + converted + "</p>");
-
-    // DONE: Increment lap by 1. Remember, we can't use "this" here.
-    stopwatch.lap++;
-  },*/
   count: function() {
 
     // DONE: increment time by 1, remember we cant use "this" here.
@@ -65,7 +55,8 @@ var stopwatch = {
     // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
     //       and save the result in a variable.
     var converted = stopwatch.timeConverter(stopwatch.time);
-    console.log("Converted = "+converted);
+    /*console.log("Converted = "+converted);
+    console.log("STOPWATCH TIMER = "+stopwatch.time);*/
 
     // DONE: Use the variable we just created to show the converted time in the "timer" div.
     $('#timer').text(converted);
@@ -137,8 +128,8 @@ var stopwatch = {
 
     //response variables
     var $responseGameScreen = $('#response');
-
-    var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!']
+    var responseTimeout;
+    var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!'];
     var responseButtonValue = -1;
     /*******************************
      * Helper functions
@@ -201,33 +192,85 @@ var stopwatch = {
     }
     function displayResponseGameScreen(){
         //Set Evaluation message
-        if(responseButtonValue === questionAnswers[currentQuestion]){
+        console.log("RESPONSE BUTTON VALUE = "+responseButtonValue+", Correct Answer = "+questionAnswers[currentQuestion]);
+        if(responseButtonValue == questionAnswers[currentQuestion]){
             $('#responseEvaluationOutput').text(responseEvaluation[0]);
             stopwatch.stop();
-        console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
+            console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
         }
         else if(responseButtonValue != questionAnswers[currentQuestion] && responseButtonValue > -1 ){
             $('#responseEvaluationOutput').text(responseEvaluation[1]);
             stopwatch.stop();
-        console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
+            console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
         }
-        else if(stopwatch.isTimeOutReached()){
+        /*9/12/2018: else if(stopwatch.isTimeOutReached()){
             $('#responseEvaluationOutput').text(responseEvaluation[2]);
             stopwatch.stop();
-        console.log("DisplayResponseGameScreen: Times Up Time stopped");
-        }
+            console.log("DisplayResponseGameScreen: Times Up Time stopped");
+        }*/
 
         //show responseGameScreen
         $responseGameScreen.show();
+
+        //update game Screen
+        //updateGameScreen();
+
+        //After the correct value is displayed then reset the responseButtonValue
+        //reset ReponseButtonValue
+        //9/12/2018: responseButtonValue = -1;
     }
     /*function hideQuestionGameScreen(){
         $questionGameScreen.hide();
         console.log("I am hiding the QuestionGameScreen");
     }*/
+    function resetResponseBtnValue(){
+        //reset ReponseButtonValue
+        responseButtonValue = -1;
+    }
     function hideAllGameScreens(){
         $allGameScreens.hide();
         console.log("I am hiding the allGameScreens");
         console.log($allGameScreens);
+    }
+    function startStopWatch(){
+        //Push game state into RESPONSE when timeout reached
+                /************
+                //Start  stopwatch
+                **************/
+               stopwatch.start();
+
+               //Set Timout for 5 seconds
+               //NOTE: Save a ref to the responseTimeout, so we can clear it in timeout (setTimeOut takes the function name only)
+               responseTimeout = setTimeout(timeOut, 1000 * stopwatch.timeLimit);
+
+               //9/12/2018: setState(states.RESPONSE);
+               
+               //check for an update in the state
+               //9/12/2018: updateGameScreen();
+    }
+    function timeOut(){
+       // Check if a button has already been clicked before showing Times Up Message
+           if(responseButtonValue == -1)
+           {
+            $('#responseEvaluationOutput').text(responseEvaluation[2]);
+            stopwatch.stop();
+            console.log("DisplayResponseGameScreen: Times Up Time stopped");
+
+            /*********************************
+             * HIDE MUST BE CALLED B4 DISPLAY
+             *********************************/
+            //Hide all the elements on the screen, before calling display
+            hideAllGameScreens();
+            
+            //Call display after responseEvaluation element has been set
+            displayResponseGameScreen();
+           }
+           //If button has been clicked clear reponseTimeout
+           else{
+               clearInterval(responseTimeout);
+           }
+           
+       // }
     }
     function updateGameScreen(){
         //Switch Statement
@@ -241,20 +284,20 @@ var stopwatch = {
                 hideAllGameScreens();
                 displayQuestionGameScreen();
 
-                //Push game state into RESPONSE when timeout reached
-                //9/12/2018: setTimeout(setState(states.RESPONSE), 1000 * stopwatch.timeLimit);
+                //start Counters
+                startStopWatch();
+                
 
                 //Check for a change in state
                 //8/12/2018: Causes and Infinite loop: updateGameScreen();
-                /************
-                //Start 
-                **************/
-                stopwatch.start();
+
+                
             break;
             case states.RESPONSE:
-                //9/12/2018: hideAllGameScreens();
+                hideAllGameScreens();
 
-                //9/12/2018: displayResponseGameScreen();
+                displayResponseGameScreen();
+                //inifinite loop: updateGameScreen();
             break;
             default:
         }
@@ -274,18 +317,14 @@ var stopwatch = {
 
     $(".choices").on('click', function(){
         /*state = states.QUESTION;*/
-        responseButtonValue = this.Value
+        responseButtonValue = this.value;
         console.log("Button Value = "+this.value);
 
         //If you make a selection, push the state to RESPONSE
-        //9/12/2018:setState(states.RESPONSE);
+        setState(states.RESPONSE);
 
         //Check for any updates in state
-        //9/12/2018:updateGameScreen();
-
-        //resetReponseButtonValue
-        //9/12/2018:responseButtonValue = -1;
-
+        updateGameScreen();
     });
     
     /*START EXECUTION*/
