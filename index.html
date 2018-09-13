@@ -24,27 +24,37 @@
                         <div class="row">
                             <div class="col-12 text-center">
                                 <h1>Rick and Morty Trivia</h1>
-                                <div id="timer">00:30</div>
+                                <div id="timer"></div>
                             </div><!--Title Col-->
                         </div><!--row-->
                         <div class="row">
                             <div class="col-12">
-                                <div id="start">
+                                <div id="start" class="screen text-center" style="display: none;">
                                     <!--button id = "startButton">Start</button-->
+                                    <button type="button" id = "startButton" class="btn">Start</button>
                                 </div>
                             </div><!--timer col-->
                         </div><!--row-->
                         <div class="row">
                             <div class="col-12">
-                                <div id="question">
-                                    <div id = "questionMessageOutput"></div>
-                                    <div id = "questionChoicesOutput"></div>
-                                </div>
-                            </div><!--Question col-->
+                                <div id="question" class = "screen" style="display: none;">
+                                    <div><h2 id="questionMessageOutput" class="text-center"></h2>
+                                    </div>
+                                    <div id = "questionChoicesOutput" class="">
+                                        <div class="choicesWrapper">
+                                            <button type="button" id="choice0" value="0" class="choices"></button>
+                                            <button type="button" id="choice1" value="1" class="choices"></button>
+                                            <button type="button" id="choice2" value="2" class="choices"></button>
+                                            <button type="button" id="choice3" value="3" class="choices"></button>
+                                        </div><!--block-->
+                                    </div><!--id-->
+                                </div><!--Question-->
+                            </div><!--col-->
                         </div><!--row-->
                         <div class = "row">
                             <div class = "col-12">
-                                <div id = "response">
+                                <div id = "response" class="screen" style="display: none;">
+                                    <div><h3 id = "responseEvaluationOutput" class="text-center"></h3 id = "responseAnswerOutput"></h3></div>
                                     <div id = "responseMessageOutput"><span class="text-center"></span><p><span id = "responseAnswerOutput"></span></p></div>
                                     <div id = "responseImage"></div>
                                 </div>
@@ -52,7 +62,7 @@
                         </div><!--row-->
                         <div class = "row">
                             <div class = "col-12">
-                                <div id = "summary">
+                                <div id = "summary" class = "screen" style="display: none;">
                                     <div><span id = "summaryTitleCorrectOutput"></span><span id = "summaryNumCorrectOutput"></span></div>
                                     <div><span id = "summaryTitleIncorrectOutput"></span><span id = "summaryNumIncorrectOutput"></span></div>
                                     <div><span id = "summaryTitleUnansweredOutput"></span><span id = "summaryNumUnansweredOutput"></span></div>

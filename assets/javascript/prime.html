@@ -1,0 +1,27 @@
+<script type="text/javascript">
+
+var i= 10;
+for(var iter = 0; iter <= i; iter++)
+{
+    //i is 2
+    if(i == 2){
+    console.log("2 is prime");
+    }
+
+    //i is odd
+    if(i % 2 !== 0)
+    {
+        for (var j = 2; j<i; j++)
+        {
+            if(i%j === 0)
+            {
+                console.log(i+" is not prime");
+            }
+            else{
+                console.log(i+" is prime");
+            }
+        }
+    }
+}
+
+</script>

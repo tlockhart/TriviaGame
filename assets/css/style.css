@@ -20,6 +20,28 @@ h1{
     text-shadow: 3px 6px 2px rgba(81, 164, 67, .3);
     font-size:4rem;
 }
+.choices{
+    width: 50%; /*width 50% of screen*/
+    
+    display:block;
+    text-align: left;/*Left Align the text*/
+
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 12%;
+    padding-right: 12%;
+
+    margin: 1% auto; /*Center the buttons*/
+    color: white;
+    background: #00b0ca;
+
+    font-size: 1.5rem;
+}
+.choicesWrapper{
+    /*text-align: left;*/
+    overflow: hidden;
+    background: red;
+}
 /*#wrapper{
  
 }*/
