@@ -2,19 +2,57 @@
 $(document).ready(function() {
     //  Variable that will hold our setInterval that runs the stopwatch
 var intervalId;
+var responseIntervalId;
+var nextQuestionIntervalId;
 
 // prevents the clock from being sped up unnecessarily
 var clockRunning = false;
+var responseClockRunning = false;
+var nextQuestionClockRunning = false;
 
+var nextQuestionStopwatch = {
+    timeLimit :10,
+    stop: function(){
+         // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+            clearInterval(nextQuestionIntervalId);
+            nextQuestionClockRunning = false;
+            /*stopwatch.time = 0;*/
+            console.log("NEXT QUESTION TIMER HAS BEEN STOPPED!")
+    },
+    start: function(){
+        if (!nextQuestionClockRunning) {
+            nextQuestioneIntervalId = setInterval(updateGameScreen,  1000 * 10 /*nextQuestionStopwatch.timeLimit*/);
+            nextQuestionClockRunning = true;
+            console.log("NEXT QUESTION TIMER HAS BEEN STARTED");
+        }//if
+    }
+}
+
+var responseStopwatch = {
+    timeLimit :5,
+    stop: function(){
+         // DONE: Use clearInterval to stop the count here and set the clock to not be running.
+            clearInterval(responseIntervalId);
+            responseClockRunning = false;
+            /*stopwatch.time = 0;*/
+            console.log("RESPONSE TIMER HAS BEEN STOPPED!")
+    },
+    start: function(){
+        if (!responseClockRunning) {
+            responseIntervalId = setInterval(timeOut,  1000 * 5 /*responseStopwatch.timeLimit*/);
+            responseClockRunning = true;
+            console.log("RESPONSE TIMER HAS BEEN STARTED");
+        }//if
+    }
+}
 // Our stopwatch object
 var stopwatch = {
 
   time: 0,
-  timeLimit :5,
-  isTimeOutReached : function(){
+ /* isTimeOutReached : function(){
       var value = stopwatch.time === stopwatch.timeLimit;
       return value;
-  },
+  },*/
   /*lap: 1,*/
 
   reset: function() {
@@ -45,7 +83,7 @@ var stopwatch = {
     clearInterval(intervalId);
     clockRunning = false;
     /*stopwatch.time = 0;*/
-    console.log("STOP HAS BEEN CLICKED!")
+    console.log("CLOCK TIMER HAS BEEN STOPPED!")
   },
   count: function() {
 
@@ -128,11 +166,13 @@ var stopwatch = {
 
     //response variables
     var $responseGameScreen = $('#response');
-    var responseTimeout;
+   
     var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!'];
     var responseButtonValue = -1;
     var correctAnswerMsg = 'The correct answer is:';
     var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.jpg', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
+    /*var nextQuestionTime = 5;*/
+    /* nextQuestionIntervalId; */
     /*******************************
      * Helper functions
      * *****************************/
@@ -144,13 +184,7 @@ var stopwatch = {
     function updateDisplays(){
     }
     
-    function displayStartGameScreen(){
-       /* var $startButton = ('<h2>'+"Start"+'<h2>');
-        $startButton.attr("id", "startButton")*/
-        /*var $startButton = $('<input/>').attr({type:'button', name:'startButton', id:'startButton', value:'Start'});
-        $('#start').append($startButton);*/
-        /*$('#start').html("<img src='http://random-ize.com/coin-flip/us-quarter/us-quarter-front.jpg' />");*/
-        
+    function displayStartGameScreen(){        
         $startGameScreen.show();
         console.log("I am displaying the StartGameScreen");
     }
@@ -176,6 +210,13 @@ var stopwatch = {
         //show questionGameScreen
         $questionGameScreen.show();
     }
+
+    function displayImage(outputElement, value){
+        var $outputElement = $('#'+outputElement);
+        //$outputElement.html('<img src= assets/images/'+value+'/>')
+        $outputElement.attr('src', value);
+    }
+
     function setResponses(){
         //Display the correct answer
             /**********************************************************/
@@ -204,13 +245,19 @@ var stopwatch = {
             console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
 
             //Clear the Time Up Interal Immediately
-            clearInterval(responseTimeout);
+            //clearInterval(responseIntervalId);
+            responseStopwatch.stop();
+
+            //console.log("displayResponseGameScreen: responseIntervalId = "+responseIntervalId);
             
             //Set the HTML Response Elements
             setResponses();
             
             //show responseGameScreen
             $responseGameScreen.show();
+
+            //Queue Next Question
+           //9/14/2018: queueNextQuestion();
             /**********************************************************/
         }
         else if(responseButtonValue != questionAnswers[currentQuestion] && responseButtonValue > -1 ){
@@ -222,28 +269,70 @@ var stopwatch = {
             console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
             
             //Clear the Time Up Interal Immediately
-            clearInterval(responseTimeout);
+            //clearInterval(responseIntervalId);
+            responseStopwatch.stop();
 
             //Set the HTML Response Elements
             setResponses();
 
             //show responseGameScreen
             $responseGameScreen.show();
+
+            //Queue Next Question
+            //9/14/2018: queueNextQuestion();
         }
 
-        
-
-        /*$('#start').html("<img src='http://random-ize.com/coin-flip/us-quarter/us-quarter-front.jpg' />");*/
-        /*('responseImage', correctAnswerMsg+questionChoices[questionAnswers[currentQuestion]]);*/
-        /*$('#responseImage').html('<img src='+responseImage[currentQuestion]+'/>');*/
-
-        
     }
-    function displayImage(outputElement, value){
-        var $outputElement = $('#'+outputElement);
-        //$outputElement.html('<img src= assets/images/'+value+'/>')
-        $outputElement.attr('src', value);
 
+    function queueNextQuestion(){
+        if(currentQuestion < questionAnswers.length-1)
+        {
+            //Reset state to Question
+        setState(states.QUESTION);
+
+        //Reset responseButtonValue
+        responseButtonValue = -1;
+
+        //console.log("queueNextQuestion: Current Question BEFORE Increment = "+currentQuestion);
+        //9/14/2018:
+        /********************************************************************** */
+        var index = parseInt(questionAnswers[currentQuestion]);
+
+           console.log('Current Question BEFORE INCR= '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
+           /************************************************************************* */
+        //Increment currentQuestion
+        currentQuestion = currentQuestion + 1;
+        /************************************************************************* */
+        index = parseInt(questionAnswers[currentQuestion]);
+
+           console.log('Current Question AFTER INCR = '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
+           /************************************************************************* */
+        //console.log("queueNextQuestion: Current Question AFTER Increment = "+currentQuestion);
+
+        //setInterval until next question revealed
+        /*var nextQuestionIntervalId = setInterval(updateGameScreen, 1000 * nextQuestionTime);*/
+        nextQuestionStopwatch.start();
+
+        //reset stopwatch
+        stopwatch.reset();
+        }
+        else
+        {
+            /*
+            //CALL queue Restart Screen
+            //Reset state to Start
+            setState(states.START);
+
+            //Reset responseButtonValue
+            responseButtonValue = -1;
+
+            //Increment currentQuestion
+            currentQuestion = 0;
+
+            //setInterval until next question revealed
+            nextQuestionIntervalId = setInterval(updateGameScreen, 1000 * nextQuestionTime);*/
+        }
+        
     }
       //Helper method to update all dynamic output content
       function displayDynamicOutput(outputElement, value){
@@ -273,8 +362,11 @@ var stopwatch = {
                stopwatch.start();
 
                //Set Timout for 5 seconds
-               //NOTE: Save a ref to the responseTimeout, so we can clear it in timeout (setTimeOut takes the function name only)
-               responseTimeout = setTimeout(timeOut, 1000 * stopwatch.timeLimit);
+               //NOTE: Save a ref to the responseIntervalId, so we can clear it in timeout (setTimeOut takes the function name only)
+               //responseIntervalId = setTimeout(timeOut, 1000 * stopwatch.timeLimit);
+
+               //Start Response stop Watch
+               responseStopwatch.start();
     }
     function timeOut(){
        // Check if a button has already been clicked before showing Times Up Message
@@ -285,13 +377,13 @@ var stopwatch = {
 
             //Stop the Timer
             stopwatch.stop();
-            console.log("DisplayResponseGameScreen: Times Up Time stopped");
+            console.log("TIMEOUT: Times Up Time stopped");
 
             //Set the HTML Response Elements
             setResponses();
             
             //show responseGameScreen
-            $responseGameScreen.show();
+            //$responseGameScreen.show();
 
             /*********************************
              * HIDE MUST BE CALLED B4 DISPLAY
@@ -302,10 +394,16 @@ var stopwatch = {
             //Call display after responseEvaluation element has been set
             /*displayResponseGameScreen();*/
             $responseGameScreen.show();
+
+            //Stop response Stop Watch
+            responseStopwatch.stop();
+
+            //Queue Next Question
+            queueNextQuestion();
            }
            //If button has been clicked clear reponseTimeout
            /*else{
-               clearInterval(responseTimeout);
+               clearInterval(responseIntervalId);
            }*/
            
        // }
