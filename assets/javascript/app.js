@@ -1,5 +1,8 @@
 
 $(document).ready(function() {
+
+/*****************************************START TIMERS*********************************/
+/**************************************************************************************/
     //  Variable that will hold our setInterval that runs the stopwatch
 var intervalId;
 var responseIntervalId;
@@ -47,22 +50,12 @@ var responseStopwatch = {
 }
 // Our stopwatch object
 var stopwatch = {
-
   time: 0,
- /* isTimeOutReached : function(){
-      var value = stopwatch.time === stopwatch.timeLimit;
-      return value;
-  },*/
-  /*lap: 1,*/
-
   reset: function() {
-
     stopwatch.time = 0;
 
     // DONE: Change the "timer" div to "00:00."
     $("#timer").text("00:00");
-
-    // DONE: Empty the "laps" div.
   },
   start: function() {
 
@@ -71,10 +64,6 @@ var stopwatch = {
       intervalId = setInterval(stopwatch.count, 1000);
       clockRunning = true;
       console.log("Timer has started");
-      /*if(stopwatch.isTimeOutReached()){
-        stopwatch.stop();
-        console.log("END OF TIME REACHED");
-      }*/
     }
   },
   stop: function() {
@@ -118,6 +107,9 @@ var stopwatch = {
     return minutes + ":" + seconds;
   }
 };
+
+/***************************************END TIMERS*************************************/
+/**************************************************************************************/
     //Game States that effect the game variables
     var states = {
     INIT : "init",
@@ -151,28 +143,33 @@ var stopwatch = {
         ["Zero Gravity", "Growth Machine", "Science", "True Level"]
     ];
 /**************************************************************************************** */
-    var questionAnswers = [2, 0, 2, 1, 1, 3, 0, 2, 1, 3];
+    /*var questionAnswers = [2, 0, 2, 1, 1, 3, 0, 2, 1, 3];*/
+    var questionAnswers = [2, 0, 2];
     var currentQuestion = 0;
 
     //GameScreens
     var $startGameScreen = $('#start');
     var $questionGameScreen = $('#question');
     var $allGameScreens = $('.screen');
-    /*$allGameScreens.hide();*/
-    
-
-    //question variables
-   /* var questions = [];*/
-
-    //response variables
     var $responseGameScreen = $('#response');
+    var $summaryGameScreen = $('#summary');
    
     var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!'];
     var responseButtonValue = -1;
     var correctAnswerMsg = 'The correct answer is:';
     var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.jpg', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
-    /*var nextQuestionTime = 5;*/
-    /* nextQuestionIntervalId; */
+ 
+    
+    //Summary Variables:
+    var correctCtr = 0;
+    var incorrectCtr = 0;
+    var unansweredCtr = 0;
+    var summaryCorrectMessage = 'Correct Answers: ';
+    var summaryIncorrectMessage = 'Incorrect Answers: ';
+    var summaryUnansweredMessage = 'Unanswered: ';
+    var summaryMessage = 'All done, here are your results!'
+
+
     /*******************************
      * Helper functions
      * *****************************/
@@ -233,9 +230,14 @@ var stopwatch = {
             displayImage('responseImage', responseImages[currentQuestion]);
             /**********************************************************/
     }
+
     function removeImage(){
         displayImage('responseImage', '');
+    }
 
+    function removeTimer(){
+        stopwatch.reset();
+        displayDynamicOutput('timer', '');
     }
     function displayResponseGameScreen(){
         //Set Evaluation message
@@ -248,6 +250,9 @@ var stopwatch = {
             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
 
+            //increment correct question counter
+            correctCtr = correctCtr + 1;
+            
             //Clear the Time Up Interal Immediately
             //clearInterval(responseIntervalId);
             responseStopwatch.stop();
@@ -276,6 +281,9 @@ var stopwatch = {
             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
             
+            //increment incorrect question counter
+            incorrectCtr = incorrectCtr + 1;
+            
             //Clear the Time Up Interal Immediately
             //clearInterval(responseIntervalId);
             responseStopwatch.stop();
@@ -296,9 +304,45 @@ var stopwatch = {
         }
 
     }
+    function displaySummaryGameScreen(){
 
+        //set summary message
+        displayDynamicOutput('summaryMessageOutput', summaryMessage);
+
+        //set summary correct message
+        displayDynamicOutput('summaryTitleCorrectOutput', summaryCorrectMessage);
+
+        //set summary incorrect message
+        displayDynamicOutput('summaryTitleIncorrectOutput', summaryIncorrectMessage);
+        
+        //set summary incorrect message
+        displayDynamicOutput('summaryTitleUnansweredOutput', summaryUnansweredMessage);
+
+        //set correctCtr
+        displayDynamicOutput('summaryNumCorrectOutput', correctCtr);
+
+        //set incorrectCtr
+        displayDynamicOutput('summaryNumIncorrectOutput', incorrectCtr);
+
+        //set unansweredCtr
+        displayDynamicOutput('summaryNumUnansweredOutput', unansweredCtr);
+
+
+        console.log("*displaySummaryGameScreen: CorrectCtr = "+correctCtr);
+        console.log("*displaySummaryGameScreen: IncorrectCtr = "+incorrectCtr);
+        console.log("*displaySummaryGameScreen: UnansweredCtr = "+unansweredCtr);
+        console.log("*displaySummaryGameScreen: STATE = "+state);
+
+        //show summary GameScreen
+        $summaryGameScreen.show();
+    }
+    function isCurrentQuestionLTAnswerLength(){
+        returnValue = currentQuestion < questionAnswers.length-1;
+        console.log('IS CURRENTQUESTION > ANSWER LENGTH : '+returnValue);
+        return returnValue;
+    }
     function queueNextQuestion(){
-        if(currentQuestion < questionAnswers.length-1)
+        if(isCurrentQuestionLTAnswerLength())
         {
             //Reset state to Question
         setState(states.QUESTION);
@@ -312,29 +356,32 @@ var stopwatch = {
         //console.log("queueNextQuestion: Current Question BEFORE Increment = "+currentQuestion);
         //9/14/2018:
         /********************************************************************** */
-        var index = parseInt(questionAnswers[currentQuestion]);
+        //var index = parseInt(questionAnswers[currentQuestion]);
 
-           console.log('Current Question BEFORE INCR= '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
+          // console.log('Current Question BEFORE INCR= '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
            /************************************************************************* */
-        //Increment currentQuestion
+       
+           //Increment currentQuestion
         currentQuestion = currentQuestion + 1;
+        
         /************************************************************************* */
-        index = parseInt(questionAnswers[currentQuestion]);
+        //index = parseInt(questionAnswers[currentQuestion]);
 
-           console.log('Current Question AFTER INCR = '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
+           //console.log('Current Question AFTER INCR = '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
            /************************************************************************* */
         //console.log("queueNextQuestion: Current Question AFTER Increment = "+currentQuestion);
 
-        //setInterval until next question revealed, call updateGameScreen
-        nextQuestionStopwatch.start();
-
         //Pause stopwatch, It will be reset before new question is displayed in updateGameScreen
-        //9/14/2018:stopwatch.reset();
         stopwatch.stop();
+        
+        //setInterval until next question revealed, calls updateGameScreen
+        nextQuestionStopwatch.start();
         }
         else
         {
-            /*
+            /***********************************
+            ** 9/14 : Set State for Start Screen
+            ************************************
             //CALL queue Restart Screen
             //Reset state to Start
             setState(states.START);
@@ -342,11 +389,25 @@ var stopwatch = {
             //Reset responseButtonValue
             responseButtonValue = -1;
 
-            //Increment currentQuestion
+            //Reset currentQuestion
             currentQuestion = 0;
+            *****************************/
 
-            //setInterval until next question revealed
-            nextQuestionIntervalId = setInterval(updateGameScreen, 1000 * nextQuestionTime);*/
+            //Reset state to Summary
+        setState(states.SUMMARY);
+
+        //Reset responseButtonValue
+        responseButtonValue = -1;
+
+        //Reset currentQuestion
+        currentQuestion = 0;
+
+        //Pause stopwatch, It will be reset before new question is displayed in updateGameScreen
+        stopwatch.stop();
+
+        //setInterval until next question revealed, calls updateGameScreen
+        nextQuestionStopwatch.start();
+
         }
         
     }
@@ -391,6 +452,9 @@ var stopwatch = {
             /*$('#responseEvaluationOutput').text(responseEvaluation[2]);*/
             displayDynamicOutput('responseEvaluationOutput', responseEvaluation[2]);
 
+            //increment incorrect question counter
+            unansweredCtr = unansweredCtr + 1;
+
             //Stop the Timer
             stopwatch.stop();
             console.log("TIMEOUT: Times Up Time stopped");
@@ -428,6 +492,13 @@ var stopwatch = {
         //Switch Statement
         switch(state) {
             case states.START:
+
+               //Remove timer before displaying the startGameScreen multiple times
+               removeTimer();
+               
+               //Hide all game screens before displaying the StartGameScreen multiple times
+               hideAllGameScreens();
+
                // hideQuestionGameScreen();
                 displayStartGameScreen();
             break;
@@ -460,6 +531,15 @@ var stopwatch = {
                 displayResponseGameScreen();
                 //inifinite loop: updateGameScreen();
             break;
+            case states.SUMMARY:
+            hideAllGameScreens();
+
+            //Remove timer before displaying the startGameScreen multiple times
+            removeTimer();
+
+            displaySummaryGameScreen();
+            //inifinite loop: updateGameScreen();
+            break;
             default:
         }
     }
@@ -486,6 +566,27 @@ var stopwatch = {
 
         //Check for any updates in state
         updateGameScreen();
+    });
+
+    $("#startOverButton").on('click', function(){
+        //Reset Counters
+        correctCtr = 0;
+        incorrectCtr = 0;
+        unansweredCtr = 0;
+
+        //CALL queue Restart Screen
+            //Reset state to Start
+            setState(states.START);
+
+            //Reset responseButtonValue
+            responseButtonValue = -1;
+
+            //Reset currentQuestion
+            currentQuestion = 0;
+            
+        //Check for any updates in state
+        updateGameScreen();
+        
     });
     
     /*START EXECUTION*/
