@@ -233,6 +233,10 @@ var stopwatch = {
             displayImage('responseImage', responseImages[currentQuestion]);
             /**********************************************************/
     }
+    function removeImage(){
+        displayImage('responseImage', '');
+
+    }
     function displayResponseGameScreen(){
         //Set Evaluation message
         console.log("RESPONSE BUTTON VALUE = "+responseButtonValue+", Correct Answer = "+questionAnswers[currentQuestion]);
@@ -293,6 +297,9 @@ var stopwatch = {
         //Reset responseButtonValue
         responseButtonValue = -1;
 
+        //Remove currentImage
+        //removeImage();
+
         //console.log("queueNextQuestion: Current Question BEFORE Increment = "+currentQuestion);
         //9/14/2018:
         /********************************************************************** */
@@ -309,8 +316,7 @@ var stopwatch = {
            /************************************************************************* */
         //console.log("queueNextQuestion: Current Question AFTER Increment = "+currentQuestion);
 
-        //setInterval until next question revealed
-        /*var nextQuestionIntervalId = setInterval(updateGameScreen, 1000 * nextQuestionTime);*/
+        //setInterval until next question revealed, call updateGameScreen
         nextQuestionStopwatch.start();
 
         //reset stopwatch
@@ -418,6 +424,9 @@ var stopwatch = {
             case states.QUESTION:
                 /*hideStartGameScreen();*/
                 hideAllGameScreens();
+                
+                //hide the previous Image
+                removeImage();
                 displayQuestionGameScreen();
 
                 //start Counters
@@ -431,6 +440,8 @@ var stopwatch = {
             break;
             case states.RESPONSE:
                 hideAllGameScreens();
+
+                //Remove sorce image
 
                 displayResponseGameScreen();
                 //inifinite loop: updateGameScreen();
