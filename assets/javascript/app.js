@@ -260,8 +260,12 @@ var stopwatch = {
             //show responseGameScreen
             $responseGameScreen.show();
 
-            //Queue Next Question
-           //9/14/2018: queueNextQuestion();
+            /************************************** */
+             //Stop response Stop Watch
+             responseStopwatch.stop();
+
+             //Queue Next Question
+             queueNextQuestion();
             /**********************************************************/
         }
         else if(responseButtonValue != questionAnswers[currentQuestion] && responseButtonValue > -1 ){
@@ -282,8 +286,13 @@ var stopwatch = {
             //show responseGameScreen
             $responseGameScreen.show();
 
-            //Queue Next Question
-            //9/14/2018: queueNextQuestion();
+            /************************************** */
+             //Stop response Stop Watch
+             responseStopwatch.stop();
+
+             //Queue Next Question
+             queueNextQuestion();
+             /************************************** */
         }
 
     }
@@ -319,8 +328,9 @@ var stopwatch = {
         //setInterval until next question revealed, call updateGameScreen
         nextQuestionStopwatch.start();
 
-        //reset stopwatch
-        stopwatch.reset();
+        //Pause stopwatch, It will be reset before new question is displayed in updateGameScreen
+        //9/14/2018:stopwatch.reset();
+        stopwatch.stop();
         }
         else
         {
@@ -424,9 +434,13 @@ var stopwatch = {
             case states.QUESTION:
                 /*hideStartGameScreen();*/
                 hideAllGameScreens();
-                
-                //hide the previous Image
+
+                //remove the previous Image, before displaying a new question
                 removeImage();
+
+                //reset stop clock before new question is displayed
+                stopwatch.reset();
+
                 displayQuestionGameScreen();
 
                 //start Counters
