@@ -128,11 +128,11 @@ var stopwatch = {
     var responseMessages = ["Correct!", "Incorrect!", "Out of Time!"];
 
     //question variables
-    var questionMessage = ["What does Rick say will be his series arch?", "What does Rick say is a weapon to scare off villagers during the purge?", "What game does Morty play at Blips and Chitz?", "What was Jerry's job before being fired?", " What animal does Rick use for Morty's love potion", "What does Rick say is the most valuable thing the Vindicators posses?", "What is the name of Morty Jr's book", "What musical did the Sanchez family see in the false parasite memory?", "Why does Rick call the fly soldiers robots?", "What does Rick allow Morty to experience in the garage?"];
+    var questionMessage = ["What does Rick say will be his series arc?", "What does Rick say is a weapon to scare off villagers during the purge?", "What game does Morty play at Blips and Chitz?", "What was Jerry's job before being fired?", " What animal does Rick use for Morty's love potion", "What does Rick say is the most valuable thing the Vindicators posses?", "What is the name of Morty Jr's book", "What musical did the Sanchez family see in the false parasite memory?", "Why does Rick call the fly soldiers robots?", "What does Rick allow Morty to experience in the garage?"];
 
     var questionChoices  = [
         ["Getting schwifty", "Finding the one armed man", "Getting the szechuan sauce", "Finding the replicators"],
-        ["Tic Tac", "M&M", "Gum", "Crunch Bar"],
+        ["Tic Tacs", "M&M", "Gum", "Crunch Bar"],
         ["Chazz", "Galactic", "Roy", "Tony"],
         ["Marketing", "Advertising agent", "Artist", "Telemarketer"],
         ["Orca", "Vole", "Mole", "Alligator"],
@@ -144,7 +144,7 @@ var stopwatch = {
     ];
 /**************************************************************************************** */
     /*var questionAnswers = [2, 0, 2, 1, 1, 3, 0, 2, 1, 3];*/
-    var questionAnswers = [2, 0, 2];
+     var questionAnswers = [2, 0, 2];
     var currentQuestion = 0;
 
     //GameScreens
@@ -157,7 +157,7 @@ var stopwatch = {
     var responseEvaluation = ['Correct!', 'Incorrect.', 'Times Up!'];
     var responseButtonValue = -1;
     var correctAnswerMsg = 'The correct answer is:';
-    var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.jpg', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
+    var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.png', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
  
     
     //Summary Variables:

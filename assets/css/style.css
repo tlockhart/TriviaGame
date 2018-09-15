@@ -56,34 +56,50 @@ h4{
 #timer{
     margin-top:1.875rem;
     font-family:'subtitle3', sans-serif;/*FUn*/
+    -webkit-text-stroke: 1px black;
+    font-size: 2.75rem;
    /* margin-bottom:1.875rem;*/
 }
 #summaryMessageOutput{
     margin-top:1.875rem;
-    font-family:'subtitle3', sans-serif;/*FUn*/
+    font-family:'subtitle2', sans-serif;/*FUn*/
     font-size: 2.75rem;
    /* margin-bottom:1.875rem;*/
+   color: white;
+   -webkit-text-stroke: 1px black;
+}
+.summaryTitle{
+    font-family:'subtitle1', sans-serif;/*FUn*/
+    -webkit-text-stroke: 1px black;
+    color: #00b0ca;
+    /*font-size: 2.75rem;*/
 }
 #questionMessageOutput{
     margin-top:0.625rem;
     font-family:'subtitle1', sans-serif;
-    
+    -webkit-text-stroke: 1px black;
     /*margin-top:1.25rem;*/
 }
 #responseEvaluationOutput{
     margin-bottom:1.875rem;
     font-family:'subtitle2', sans-serif;
+    -webkit-text-stroke: 1px black;
+    color: #00b0ca;
 }
 #responseMessageOutput, #responseAnswerOutput{
     margin-top:0.625rem;
     margin-bottom:0.625rem;
     font-family:'subtitle1', sans-serif;
+    -webkit-text-stroke: 1px black;
+    color: white
 }
 /*#responseEvaluationOutput{
     margin-bottom: 0.625rem;
 }*/
 #responseImage{
     margin-top:1.875rem;
+    /*height: 31.25rem;*/
+    border: 5px solid #00b0ca;
 }
 .choices{
     width: 50%; /*width 50% of screen*/
@@ -129,7 +145,7 @@ h4{
     background: red;
 }
 #responseImage{
-    width: 35%;
+    /*width: 35%;*/
 }
 /*#wrapper{
  
