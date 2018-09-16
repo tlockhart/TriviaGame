@@ -14,7 +14,7 @@ var responseClockRunning = false;
 var nextQuestionClockRunning = false;
 
 var nextQuestionStopwatch = {
-    timeLimit :10,
+    timeLimit :20,
     stop: function(){
          // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(nextQuestionIntervalId);
@@ -24,7 +24,7 @@ var nextQuestionStopwatch = {
     },
     start: function(){
         if (!nextQuestionClockRunning) {
-            nextQuestioneIntervalId = setInterval(updateGameScreen,  1000 * 10 /*nextQuestionStopwatch.timeLimit*/);
+            nextQuestioneIntervalId = setInterval(updateGameScreen,  1000 * nextQuestionStopwatch.timeLimit);
             nextQuestionClockRunning = true;
             console.log("NEXT QUESTION TIMER HAS BEEN STARTED");
         }//if
@@ -32,7 +32,7 @@ var nextQuestionStopwatch = {
 }
 
 var responseStopwatch = {
-    timeLimit :5,
+    timeLimit :20,
     stop: function(){
          // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(responseIntervalId);
@@ -42,7 +42,7 @@ var responseStopwatch = {
     },
     start: function(){
         if (!responseClockRunning) {
-            responseIntervalId = setInterval(timeOut,  1000 * 5 /*responseStopwatch.timeLimit*/);
+            responseIntervalId = setInterval(timeOut,  1000 * responseStopwatch.timeLimit);
             responseClockRunning = true;
             console.log("RESPONSE TIMER HAS BEEN STARTED");
         }//if
@@ -128,10 +128,10 @@ var stopwatch = {
     var responseMessages = ["Correct!", "Incorrect!", "Out of Time!"];
 
     //question variables
-    var questionMessage = ["What does Rick say will be his series arc?", "What does Rick say is a weapon to scare off villagers during the purge?", "What game does Morty play at Blips and Chitz?", "What was Jerry's job before being fired?", " What animal does Rick use for Morty's love potion", "What does Rick say is the most valuable thing the Vindicators posses?", "What is the name of Morty Jr's book", "What musical did the Sanchez family see in the false parasite memory?", "Why does Rick call the fly soldiers robots?", "What does Rick allow Morty to experience in the garage?"];
+    var questionMessage = ["What does Rick say he is driven to find?", "What does Rick say is a weapon to scare off villagers during the purge?", "What game does Morty play at Blips and Chitz?", "What was Jerry's job before being fired?", " What animal does Rick use for Morty's love potion", "What does Rick say is the most valuable thing the Vindicators posses?", "What is the name of Morty Jr's book", "What musical did the Sanchez family see in the false parasite memory?", "Why does Rick call the fly soldiers robots?", "What does Rick allow Morty to experience in the garage?"];
 
     var questionChoices  = [
-        ["Getting schwifty", "Finding the one armed man", "Getting the szechuan sauce", "Finding the replicators"],
+        ["Schwifty", "The one armed man", "The szechuan sauce", "The replicators"],
         ["Tic Tacs", "M&M", "Gum", "Crunch Bar"],
         ["Chazz", "Galactic", "Roy", "Tony"],
         ["Marketing", "Advertising agent", "Artist", "Telemarketer"],
@@ -158,7 +158,7 @@ var stopwatch = {
     var responseButtonValue = -1;
     var correctAnswerMsg = 'The correct answer is:';
     var responseImages = ['assets/images/szechuan.jpg', 'assets/images/tictacs.jpg', 'assets/images/roy.jpg','assets/images/advertising.jpg','assets/images/vole.jpg', 'assets/images/noobnoob.png', 'assets/images/horriblefather.jpg', 'assets/images/hulkmusical.jpg', 'assets/images/robots.jpg', 'assets/images/truelevel.jpg'];
- 
+    var responseAudio = ['assets/audio/szechuan.mp3', 'assets/audio/tictacs.mp3', 'assets/audio/roy.mp3', 'assets/audio/advertising.mp3', 'assets/audio/vole.mp3', 'assets/audio/noobnoob.mp3', 'assets/audio/horriblefather.mp3', 'assets/images/hulkmusical.mp3', 'assets/images/robots.mp3', 'assets/images/truelevel.mp3'];
     
     //Summary Variables:
     var correctCtr = 0;
@@ -214,6 +214,11 @@ var stopwatch = {
         $outputElement.attr('src', value);
     }
 
+    function playAudio(value){
+        var audio = new Audio(value);
+        audio.play();
+    }
+
     function setResponses(){
         //Display the correct answer
             /**********************************************************/
@@ -228,6 +233,9 @@ var stopwatch = {
 
             //Display the  image
             displayImage('responseImage', responseImages[currentQuestion]);
+
+            //Play Audio
+            playAudio(responseAudio[currentQuestion]);
             /**********************************************************/
     }
 
@@ -349,27 +357,9 @@ var stopwatch = {
 
         //Reset responseButtonValue
         responseButtonValue = -1;
-
-        //Remove currentImage
-        //removeImage();
-
-        //console.log("queueNextQuestion: Current Question BEFORE Increment = "+currentQuestion);
-        //9/14/2018:
-        /********************************************************************** */
-        //var index = parseInt(questionAnswers[currentQuestion]);
-
-          // console.log('Current Question BEFORE INCR= '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
-           /************************************************************************* */
        
            //Increment currentQuestion
         currentQuestion = currentQuestion + 1;
-        
-        /************************************************************************* */
-        //index = parseInt(questionAnswers[currentQuestion]);
-
-           //console.log('Current Question AFTER INCR = '+currentQuestion+', The index value = '+index+' Image name = '+responseImages[currentQuestion]+', Correct Answer = '+questionChoices[currentQuestion][index]);
-           /************************************************************************* */
-        //console.log("queueNextQuestion: Current Question AFTER Increment = "+currentQuestion);
 
         //Pause stopwatch, It will be reset before new question is displayed in updateGameScreen
         stopwatch.stop();
@@ -461,9 +451,6 @@ var stopwatch = {
 
             //Set the HTML Response Elements
             setResponses();
-            
-            //show responseGameScreen
-            //$responseGameScreen.show();
 
             /*********************************
              * HIDE MUST BE CALLED B4 DISPLAY
@@ -481,12 +468,6 @@ var stopwatch = {
             //Queue Next Question
             queueNextQuestion();
            }
-           //If button has been clicked clear reponseTimeout
-           /*else{
-               clearInterval(responseIntervalId);
-           }*/
-           
-       // }
     }
     function updateGameScreen(){
         //Switch Statement
@@ -516,12 +497,7 @@ var stopwatch = {
 
                 //start Counters
                 startStopWatch();
-                
 
-                //Check for a change in state
-                //8/12/2018: Causes and Infinite loop: updateGameScreen();
-
-                
             break;
             case states.RESPONSE:
                 hideAllGameScreens();
@@ -529,7 +505,6 @@ var stopwatch = {
                 //Remove sorce image
 
                 displayResponseGameScreen();
-                //inifinite loop: updateGameScreen();
             break;
             case states.SUMMARY:
             hideAllGameScreens();
@@ -538,7 +513,7 @@ var stopwatch = {
             removeTimer();
 
             displaySummaryGameScreen();
-            //inifinite loop: updateGameScreen();
+
             break;
             default:
         }
@@ -551,9 +526,7 @@ var stopwatch = {
         console.log("In StartButton State = "+state);
 
         //Check for any updates in state
-        updateGameScreen();
-
-        
+        updateGameScreen();  
     });
 
     $(".choices").on('click', function(){
@@ -583,7 +556,7 @@ var stopwatch = {
 
             //Reset currentQuestion
             currentQuestion = 0;
-            
+
         //Check for any updates in state
         updateGameScreen();
         
