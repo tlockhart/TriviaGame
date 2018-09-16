@@ -14,30 +14,30 @@ var responseClockRunning = false;
 var nextQuestionClockRunning = false;
 
 var nextQuestionStopwatch = {
-    timeLimit :20,
+    timeLimit :10,
     stop: function(){
          // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(nextQuestionIntervalId);
             nextQuestionClockRunning = false;
-            /*stopwatch.time = 0;*/
-            console.log("NEXT QUESTION TIMER HAS BEEN STOPPED!")
+           // console.log("NEXT QUESTION TIMER HAS BEEN STOPPED!")
+            console.error("Stopping nextQuestionStopWatch");
     },
     start: function(){
         if (!nextQuestionClockRunning) {
-            nextQuestioneIntervalId = setInterval(updateGameScreen,  1000 * nextQuestionStopwatch.timeLimit);
+            nextQuestionIntervalId = setInterval(updateGameScreen,  1000 * nextQuestionStopwatch.timeLimit);
             nextQuestionClockRunning = true;
-            console.log("NEXT QUESTION TIMER HAS BEEN STARTED");
+            //console.log("NEXT QUESTION TIMER HAS BEEN STARTED");
+             console.error("Starting nextQuestionStopWatch");
         }//if
     }
 }
 
 var responseStopwatch = {
-    timeLimit :20,
+    timeLimit :10,
     stop: function(){
          // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(responseIntervalId);
             responseClockRunning = false;
-            /*stopwatch.time = 0;*/
             console.log("RESPONSE TIMER HAS BEEN STOPPED!")
     },
     start: function(){
@@ -72,7 +72,7 @@ var stopwatch = {
     clearInterval(intervalId);
     clockRunning = false;
     /*stopwatch.time = 0;*/
-    console.log("CLOCK TIMER HAS BEEN STOPPED!")
+    console.log("CLOCK TIMER HAS BEEN STOPPED AT: "+stopwatch.time);
   },
   count: function() {
 
@@ -190,6 +190,9 @@ var stopwatch = {
         console.log("I am hiding the StartGameScreen");
     }*/
     function displayQuestionGameScreen(){
+        //9/16/2018 mod:
+        nextQuestionStopwatch.stop();
+
         var choiceLength = 4;
         /*var $question = $('#questionMessageOutput');
         $question.text(questionMessage[currentQuestion]);*/
@@ -244,10 +247,17 @@ var stopwatch = {
     }
 
     function removeTimer(){
-        stopwatch.reset();
-        displayDynamicOutput('timer', '');
+        //9/16/2018d:stopwatch.reset();
+        //9/16/2018e:
+        nextQuestionStopwatch.stop();
+        /***************************/
+        //displayDynamicOutput('timer', '');
+        $('#timer').hide();
     }
     function displayResponseGameScreen(){
+        //9/16/2018: mod
+        //nextQuestionStopwatch.start();
+
         //Set Evaluation message
         console.log("RESPONSE BUTTON VALUE = "+responseButtonValue+", Correct Answer = "+questionAnswers[currentQuestion]);
         if(responseButtonValue == questionAnswers[currentQuestion]){
@@ -255,7 +265,7 @@ var stopwatch = {
             displayDynamicOutput('responseEvaluationOutput', responseEvaluation[0]);
 
             //Stop the Timer
-            stopwatch.stop();
+             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Correct Answer Time stopped");
 
             //increment correct question counter
@@ -275,7 +285,7 @@ var stopwatch = {
 
             /************************************** */
              //Stop response Stop Watch
-             responseStopwatch.stop();
+            //9/16/2018:duplicate line responseStopwatch.stop();
 
              //Queue Next Question
              queueNextQuestion();
@@ -286,7 +296,7 @@ var stopwatch = {
             displayDynamicOutput('responseEvaluationOutput', responseEvaluation[1]);
 
             //Stop the Timer
-            stopwatch.stop();
+             stopwatch.stop();
             console.log("DisplayResponseGameScreen: Incorrect Answer Time stopped");
             
             //increment incorrect question counter
@@ -304,7 +314,7 @@ var stopwatch = {
 
             /************************************** */
              //Stop response Stop Watch
-             responseStopwatch.stop();
+             //9/16/2018: duplicate responseStopwatch.stop();
 
              //Queue Next Question
              queueNextQuestion();
@@ -350,6 +360,8 @@ var stopwatch = {
         return returnValue;
     }
     function queueNextQuestion(){
+        //9/16/2018 mod:
+        nextQuestionStopwatch.start();
         if(isCurrentQuestionLTAnswerLength())
         {
             //Reset state to Question
@@ -365,7 +377,7 @@ var stopwatch = {
         stopwatch.stop();
         
         //setInterval until next question revealed, calls updateGameScreen
-        nextQuestionStopwatch.start();
+        //9/16/2018:nextQuestionStopwatch.start();
         }
         else
         {
@@ -396,7 +408,7 @@ var stopwatch = {
         stopwatch.stop();
 
         //setInterval until next question revealed, calls updateGameScreen
-        nextQuestionStopwatch.start();
+        //9/16/2018:nextQuestionStopwatch.start();
 
         }
         
@@ -446,7 +458,7 @@ var stopwatch = {
             unansweredCtr = unansweredCtr + 1;
 
             //Stop the Timer
-            stopwatch.stop();
+           stopwatch.stop();
             console.log("TIMEOUT: Times Up Time stopped");
 
             //Set the HTML Response Elements
@@ -471,6 +483,7 @@ var stopwatch = {
     }
     function updateGameScreen(){
         //Switch Statement
+        console.error("Inside UpdateGameScreen STATE = "+state);
         switch(state) {
             case states.START:
 
@@ -521,6 +534,8 @@ var stopwatch = {
     
 
     $("#startButton").on('click', function(){
+        //9/16/2018:
+        $('#timer').show();
         //Set state to question when startbutton clicked
         setState(states.QUESTION);
         console.log("In StartButton State = "+state);
