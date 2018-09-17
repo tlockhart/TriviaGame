@@ -31,9 +31,9 @@ var nextQuestionStopwatch = {
         }//if
     }
 }
-
+//var _this;
 var responseStopwatch = {
-    timeLimit :10,
+    timeLimit :20,
     stop: function(){
          // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(responseIntervalId);
@@ -42,6 +42,7 @@ var responseStopwatch = {
     },
     start: function(){
         if (!responseClockRunning) {
+            //_this = responseStopwatch;
             responseIntervalId = setInterval(timeOut,  1000 * responseStopwatch.timeLimit);
             responseClockRunning = true;
             console.log("RESPONSE TIMER HAS BEEN STARTED");
@@ -50,12 +51,14 @@ var responseStopwatch = {
 }
 // Our stopwatch object
 var stopwatch = {
-  time: 0,
+  time : responseStopwatch.timeLimit,
+  //9/16/2018:time: 0,
   reset: function() {
-    stopwatch.time = 0;
+    //9/16/2018: stopwatch.time = 0;
+    stopwatch.time = responseStopwatch.timeLimit;
 
     // DONE: Change the "timer" div to "00:00."
-    $("#timer").text("00:00");
+    $("#timer").text("00:"+stopwatch.time);
   },
   start: function() {
 
@@ -77,7 +80,7 @@ var stopwatch = {
   count: function() {
 
     // DONE: increment time by 1, remember we cant use "this" here.
-    stopwatch.time++;
+    stopwatch.time--;
 
     // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
     //       and save the result in a variable.
