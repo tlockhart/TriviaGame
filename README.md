@@ -1,4 +1,6 @@
-# TriviaGame
+<h1 align="center">TriviaGame</h1>
+<p align="center"><kbd><img src ="assets/images/triviagame.jpg" /></kbd></p><br/>
+
 This repo is an interactive trivia game.  The goal of the game is to correctly answer as many questions about the Rick and Morty series as possible.  Each time a question is answered the player’s score increases.  However, each answer must be selected prior to the countdown clock reaching 0.  The game displays the following:
 1. Countdown Clock
 1. Questions
