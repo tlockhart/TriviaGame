@@ -16,15 +16,11 @@ $(document).ready(function() {
                  // DONE: Use clearInterval to stop the count here and set the clock to not be running.
                     clearInterval(nextQuestionIntervalId);
                     nextQuestionClockRunning = false;
-                   // //console.log("NEXT QUESTION TIMER HAS BEEN STOPPED!")
-                    //console.error("Stopping nextQuestionStopWatch");
             },
             start: function(){
                 if (!nextQuestionClockRunning) {
                     nextQuestionIntervalId = setInterval(updateGameScreen,  1000 * nextQuestionStopwatch.timeLimit);
                     nextQuestionClockRunning = true;
-                    //console.log("NEXT QUESTION TIMER HAS BEEN STARTED");
-                     //console.error("Starting nextQuestionStopWatch");
                 }//if
             }
         }
@@ -35,55 +31,42 @@ $(document).ready(function() {
                  // DONE: Use clearInterval to stop the count here and set the clock to not be running.
                     clearInterval(responseIntervalId);
                     responseClockRunning = false;
-                    //console.log("RESPONSE TIMER HAS BEEN STOPPED!")
             },
             start: function(){
                 if (!responseClockRunning) {
                     //_this = responseStopwatch;
                     responseIntervalId = setInterval(timeOut,  1000 * responseStopwatch.timeLimit);
                     responseClockRunning = true;
-                    //console.log("RESPONSE TIMER HAS BEEN STARTED");
                 }//if
             }
         }
         // Our stopwatch object
         var stopwatch = {
           time : responseStopwatch.timeLimit,
-          //9/16/2018:time: 0,
           reset: function() {
-            //9/16/2018: stopwatch.time = 0;
             stopwatch.time = responseStopwatch.timeLimit;
         
             // DONE: Change the "timer" div to "00:00."
             $("#timer").text("00:"+stopwatch.time);
           },
           start: function() {
-        
             // DONE: Use setInterval to start the count here and set the clock to running.
             if (!clockRunning) {
               intervalId = setInterval(stopwatch.count, 1000);
               clockRunning = true;
-              //console.log("Timer has started");
             }
           },
           stop: function() {
-        
             // DONE: Use clearInterval to stop the count here and set the clock to not be running.
             clearInterval(intervalId);
             clockRunning = false;
-            /*stopwatch.time = 0;*/
-            //console.log("CLOCK TIMER HAS BEEN STOPPED AT: "+stopwatch.time);
           },
           count: function() {
-        
             // DONE: increment time by 1, remember we cant use "this" here.
             stopwatch.time--;
-        
-            // DONE: Get the current time, pass that into the stopwatch.timeConverter function,
-            //       and save the result in a variable.
+            /* DONE: Get the current time, pass that into the stopwatch.timeConverter function,
+            and save the result in a variable.*/
             var converted = stopwatch.timeConverter(stopwatch.time);
-            /*//console.log("Converted = "+converted);
-            //console.log("STOPWATCH TIMER = "+stopwatch.time);*/
         
             // DONE: Use the variable we just created to show the converted time in the "timer" div.
             $('#timer').text(converted);
