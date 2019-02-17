@@ -1,0 +1,27 @@
+{
+  "name": "triviagame",
+  "version": "1.0.0",
+  "description": "Rick and Morty Trivia",
+  "main": "index.html",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  },
+  "scripts": {
+    "lint": "eslint ./",
+    "lint:fix": "eslint --fix ./",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tlockhart/TriviaGame.git"
+  },
+  "author": "Tony Lockhart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tlockhart/TriviaGame/issues"
+  },
+  "homepage": "https://github.com/tlockhart/TriviaGame#readme"
+}
